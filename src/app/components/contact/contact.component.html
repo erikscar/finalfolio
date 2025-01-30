@@ -75,13 +75,15 @@
                 <hr>
 
                 <div class="comments-container">
-                    <div class="comment" *ngFor="let msg of messages">
-                        <div *ngIf="isImage(msg.imageLink); else showDefaultIcon">
-                            <img [src]="msg.imageLink" alt="">
+                    <div class="comment" *ngFor="let msg of messages; let i = index">
+                        <div *ngIf="!imageError[i]; else showDefaultIcon">
+                            <img  [src]="msg.imageLink" alt="" (load)="checkImage(i, msg.imageLink)" (error)="checkImage(i, msg.imageLink)" >
                         </div>
                         <ng-template #showDefaultIcon>
-                            <i class="fa-solid fa-user"></i>
-                        </ng-template>
+                            <div class="defaultIcon-wrapper">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                        </ng-template> 
                         <div class="comment-info">
                             <div>
                                 <h3>{{ msg.username }}</h3>

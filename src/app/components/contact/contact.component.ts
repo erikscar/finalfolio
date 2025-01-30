@@ -18,6 +18,8 @@ import { SocketService } from '../../services/socket.service';
     username: string = '';
     newMessage: string = '';
     imageLink: string = '';
+    imageError: boolean[] = [];
+
 
     constructor(private socketService: SocketService) {}
 
@@ -71,9 +73,17 @@ import { SocketService } from '../../services/socket.service';
       this.form.reset()
   }
 
-  isImage(url: string): boolean {
-    const image = new Image()
-    image.src = url
-    return image.complete && image.height > 0
+  
+  checkImage(index: number, url: string): void { 
+    const img = new Image();
+
+    img.onload = () => {
+      this.imageError[index] = false;
+    }
+    img.onerror = () => {
+      this.imageError[index] = true;
+    }
+
+    img.src = url;
   }
 }
